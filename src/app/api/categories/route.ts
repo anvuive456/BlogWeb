@@ -25,5 +25,6 @@ export const POST = async (req: NextRequest) => {
   const body = await req.json();
   if (!body) return NextResponse.error();
 
-  return prisma.category.create({data: body});
+   const category = await prisma.category.create({data: body});
+   return  NextResponse.json(category);
 }
