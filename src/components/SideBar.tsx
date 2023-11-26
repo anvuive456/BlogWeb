@@ -1,19 +1,22 @@
 import {Category, Post} from "@prisma/client";
 import {Suspense} from "react";
 import {CategoryWithPosts, PostWithAuthor} from "@an/types/types";
-import {api} from "../../lib/api";
 import RecentArticleCard from "@an/components/RecentArticleCard";
 import RecentArticleCardPlaceHolder from "@an/components/placeholders/RecentArticleCardPlaceHolder";
+import {baseUrl} from "../../lib/api";
+
 
 const Categories = async () => {
-  const {data} = await api.get<{}, { data: CategoryWithPosts[] }>('/categories');
-  console.log(data);
+  const data = await fetch(baseUrl + '/categories',{next: {revalidate: 3000}})
+      .then(value => value.json())
+      .then(value => value as CategoryWithPosts[]);
+
   return (
       <ul>
         {
           (data && data.map((cate) => {
             return <li key={cate.id} className="flex justify-between">
-              <a href="" className="text-gray-900 font-thin font-serif text-lg py-2 block ">
+              <a href={baseUrl+'/home/categories/'+cate.slug} className="text-gray-900 font-thin font-serif text-lg py-2 block ">
                 {cate.name}
               </a><span className="text-gray-700 text-lg font-thin p-2">{cate.posts.length}</span></li>
           }))
@@ -25,12 +28,14 @@ const Categories = async () => {
 }
 
 const RecentPosts = async () => {
-  const {data} = await api.get<{}, { data: PostWithAuthor[] }>('/recent_posts');
+  const posts = await fetch(baseUrl + '/recent_posts',{next: {revalidate: 3000}})
+      .then(res => res.json())
+      .then(value => value as PostWithAuthor[]);
 
   return (<>
     <ul>
       {
-          data && data.map(post => <li key={post.id} className="mb-3">
+          posts && posts.map(post => <li key={post.id} className="mb-3">
             <RecentArticleCard post={post}/>
           </li>)
       }

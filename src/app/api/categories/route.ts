@@ -4,6 +4,7 @@ import {NextRequest, NextResponse} from "next/server";
 export const GET = async (req: NextRequest) => {
   const queries = req.nextUrl.searchParams;
   const take = queries.get('postLimit') == null ? undefined : Number(queries.get('postLimit'));
+  console.log('take',take);
   const categories = await prisma.category.findMany(
       {
         include: {

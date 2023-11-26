@@ -1,11 +1,13 @@
 import PortraitArticleCard from "@an/components/PortraitArticleCard";
 import SideBar from "@an/components/SideBar";
-import {api} from "../../../../../lib/api";
+import {baseUrl} from "../../../../../lib/api";
 import {CategoryWithPosts} from "@an/types/types";
 
-const Page = async ({ params }: { params: { slug: string } })=> {
-  const {data} = await  api.get<{},{data: { category: CategoryWithPosts }}>(`/categories/${params.slug}`);
-  const {category} = data;
+const Page = async ({params}: { params: { slug: string } }) => {
+  const category = await fetch(baseUrl + `/categories/${params.slug}`, {next: {revalidate: 0}})
+      .then(res => res.json())
+      .then(value => value as CategoryWithPosts);
+  console.log("category slug", category);
   return (
       <>
         <main className="max-w-5xl mx-auto pb-10 pt-10">

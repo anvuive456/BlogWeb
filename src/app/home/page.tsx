@@ -1,5 +1,4 @@
 import SideBar from "@an/components/SideBar";
-import {Suspense} from "react";
 
 const Page = () => {
 

@@ -20,5 +20,5 @@ export const GET = async (req: NextRequest, {params}: {
     }
   });
 
-  return NextResponse.json({category});
+  return NextResponse.json(category);
 }
