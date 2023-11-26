@@ -1,40 +1,49 @@
 import {Category, Post} from "@prisma/client";
 import {Suspense} from "react";
-import {CategoryWithPosts} from "@an/types/types";
+import {CategoryWithPosts, PostWithAuthor} from "@an/types/types";
 import {api} from "../../lib/api";
+import RecentArticleCard from "@an/components/RecentArticleCard";
+import RecentArticleCardPlaceHolder from "@an/components/placeholders/RecentArticleCardPlaceHolder";
 
 const Categories = async () => {
-  // const {categories} = await api.get<{},{categories:CategoryWithPosts[]}>('/categories');
   const {data} = await api.get<{}, { data: CategoryWithPosts[] }>('/categories');
+  console.log(data);
   return (
-      <div className="mt-10">
-        <h2 className="font-light text-xl mb-5 text-gray-900 text-center">Danh mục</h2>
-        <ul>
-          {
-            (data && data.map((cate) => {
-              return <li key={cate.id} className="flex justify-between">
-                <a href="" className="text-gray-900 font-thin font-serif text-lg py-2 block ">
-                  {cate.name}
-                </a><span className="text-gray-700 text-lg font-thin p-2">{cate.posts.length}</span></li>
-            }))
-          }
+      <ul>
+        {
+          (data && data.map((cate) => {
+            return <li key={cate.id} className="flex justify-between">
+              <a href="" className="text-gray-900 font-thin font-serif text-lg py-2 block ">
+                {cate.name}
+              </a><span className="text-gray-700 text-lg font-thin p-2">{cate.posts.length}</span></li>
+          }))
+        }
 
-        </ul>
-      </div>
+      </ul>
+
   )
 }
 
-const RecentPosts = async ()=>{
-  const {data} = await api.get('/')
+const RecentPosts = async () => {
+  const {data} = await api.get<{}, { data: PostWithAuthor[] }>('/recent_posts');
+
+  return (<>
+    <ul>
+      {
+          data && data.map(post => <li key={post.id} className="mb-3">
+            <RecentArticleCard post={post}/>
+          </li>)
+      }
+    </ul>
+  </>);
 }
 
-const SideBar = async () => {
-
+const SideBar = () => {
 
   return (
       <>
         <div className="ml-2 md:ml-4 mr-2">
-          <div className="mt-20 sm:mt-0 text-center">
+          <div className="mt-16 sm:mt-0 text-center">
             <div className="w-64 h-64 rounded-full mx-auto bg-cover bg-center bg-no-repeat bg-my-image"/>
             {/*<h2 className="font-light text-xl my-5">Raalhu</h2>*/}
             {/*<p className="text-gray-900 font-thin tracking-wider leading-loose">Hi! Welcome to*/}
@@ -99,20 +108,23 @@ const SideBar = async () => {
           {/*        </form>*/}
           {/*    </div>*/}
           {/*</div>*/}
-          <Suspense fallback={<div className='m-5'>Đang tải...</div>}>
-            <Categories/>
+          <div className="mt-10">
+            <h2 className="font-light text-xl mb-5 text-gray-900 text-center">Danh mục</h2>
+            <Suspense fallback={
+              <div role='status' className='max-w-sm animate-pulse'>
+                <div className="mt-10 mb-10 h-3.5 bg-gray-200 rounded-full dark:bg-gray-700 w-52 "></div>
+                <div className="mt-10 mb-10 h-3.5 bg-gray-200 rounded-full dark:bg-gray-700 w-52 "></div>
+              </div>
+            }>
+              <Categories/>
+            </Suspense>
+          </div>
 
-          </Suspense>
           <div className="mt-10">
             <h2 className="font-light text-xl mb-5 text-gray-900 text-center">Bài viết gần đây</h2>
-            <ul>
-              {/*@foreach($recent_posts as $post)*/}
-              <li className="mb-3">
-                {/*<x-recent-article-card :data="$post"></x-recent-article-card>*/}
-              </li>
-              {/*@endforeach*/}
-
-            </ul>
+            <Suspense fallback={<RecentArticleCardPlaceHolder/>}>
+              <RecentPosts/>
+            </Suspense>
           </div>
         </div>
 
