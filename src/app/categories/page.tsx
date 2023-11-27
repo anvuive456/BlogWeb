@@ -2,11 +2,11 @@ import SideBar from "@an/components/SideBar";
 import {CategoryWithPosts} from "@an/types/types";
 import PortraitArticleCard from "@an/components/PortraitArticleCard";
 import {Suspense} from "react";
-import {baseUrl} from "../../../../lib/api";
+import {baseApiUrl} from "../../../lib/api";
 
 
 const Categories = async () => {
-  const categories = await fetch(baseUrl + '/categories?postLimit=2', {next: {revalidate: 0}})
+  const categories = await fetch(baseApiUrl + '/categories?postLimit=2')
       .then(value => value.json())
       .then(value => value as CategoryWithPosts[]).catch(reason => []);
   return (

@@ -3,11 +3,11 @@ import {Suspense} from "react";
 import {CategoryWithPosts, PostWithAuthor} from "@an/types/types";
 import RecentArticleCard from "@an/components/RecentArticleCard";
 import RecentArticleCardPlaceHolder from "@an/components/placeholders/RecentArticleCardPlaceHolder";
-import {baseUrl} from "../../lib/api";
+import {baseApiUrl, baseUrl} from "../../lib/api";
 
 
 const Categories = async () => {
-  const data = await fetch(baseUrl + '/categories',{next: {revalidate: 3000}})
+  const data = await fetch(baseApiUrl + '/categories')
       .then(value => value.json())
       .then(value => value as CategoryWithPosts[]);
 
@@ -28,7 +28,7 @@ const Categories = async () => {
 }
 
 const RecentPosts = async () => {
-  const posts = await fetch(baseUrl + '/recent_posts',{next: {revalidate: 3000}})
+  const posts = await fetch(baseApiUrl + '/recent_posts')
       .then(res => res.json())
       .then(value => value as PostWithAuthor[]);
 

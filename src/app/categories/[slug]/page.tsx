@@ -1,9 +1,9 @@
 import PortraitArticleCard from "@an/components/PortraitArticleCard";
 import SideBar from "@an/components/SideBar";
-import {baseUrl} from "../../../../../lib/api";
+import {baseApiUrl} from "../../../../lib/api";
 import {CategoryWithPosts} from "@an/types/types";
 const Page = async ({params}: { params: { slug: string } }) => {
-  const category = await fetch(baseUrl + `/categories/${params.slug}`)
+  const category = await fetch(baseApiUrl + `/categories/${params.slug}`)
       .then(res => res.json())
       .then(value => value as CategoryWithPosts);
   console.log("category slug", category);

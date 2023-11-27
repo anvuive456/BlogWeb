@@ -11,7 +11,7 @@ const RecentArticleCard = ({post}: { post: PostWithAuthor }) => {
                  alt=""/>
           </div>
           <div className="w-2/3 px-2">
-            <h3 className="text-gray-900 font-thin font-serif mb-2">{post.title}</h3>
+            <h3 className="line-clamp-2 text-gray-900 font-thin font-serif mb-2">{post.title}</h3>
             <span className="text-xs text-gray-800 font-thin block mb-5"><AppDate
                 dateString={post.createdAt.toString()}/></span>
           </div>
