@@ -7,10 +7,7 @@ import {Suspense} from "react";
 const inter = Inter({subsets: ['latin']});
 // const popin = Poppins({subsets:['latin'],weight:['100','200','300','400','500','600','900']});
 
-export const metadata: Metadata = {
-  title: 'Trang chủ',
-  description: 'Xem các bài đăng',
-}
+
 
 export const revalidate = 180; // revalidate at most every hour
 
@@ -23,10 +20,8 @@ export default function RootLayout({
       <html lang="en">
       <body >
       <AppHeader/>
-      <Suspense fallback={<div>Đang tải....</div>}>
-        {children}
+      {children}
 
-      </Suspense>
       <AppFooter/>
       </body>
       </html>
