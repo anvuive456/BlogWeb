@@ -13,8 +13,8 @@ const AppHeader = ()=> {
                     <nav className="my-2 px-2 w-full overflow-hidden md:w-3/6 lg:w-1/3 xl:w-1/3 text-center md:text-left">
                         <ul>
                             <li className="inline-block"><Link className="block font-semibold px-3" href="/">Trang chủ</Link></li>
-                            <li className="inline-block"><Link className="block font-semibold px-3" href="categories">Danh mục</Link></li>
-                            <li className="inline-block"><Link className="block font-semibold px-3" href='about'>Về tôi</Link></li>
+                            <li className="inline-block"><Link className="block font-semibold px-3" href="/categories">Danh mục</Link></li>
+                            <li className="inline-block"><Link className="block font-semibold px-3" href='/about'>Về tôi</Link></li>
                         </ul>
                     </nav>
 

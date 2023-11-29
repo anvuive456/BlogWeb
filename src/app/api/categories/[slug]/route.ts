@@ -6,15 +6,33 @@ export const GET = async (req: NextRequest, {params}: {
     slug: string
   }
 }) => {
+  const {searchParams} = new URL(req.url);
+  const search = searchParams.get('search') ?? '';
+
+  console.log(search);
   const category = await prisma.category.findUnique({
     where: {
-      slug: params.slug
+      slug: params.slug,
     },
     include: {
-      posts: true,
+      posts: {
+        where: {
+          title: {
+            contains: search,
+            mode: 'insensitive'
+          }
+        }
+      },
       _count: {
         select: {
-          posts: true
+          posts: {
+            where: {
+              title: {
+                contains: search,
+                mode: 'insensitive'
+              }
+            }
+          }
         }
       }
     }

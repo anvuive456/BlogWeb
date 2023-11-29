@@ -2,11 +2,10 @@ import PortraitArticleCard from "@an/components/PortraitArticleCard";
 import SideBar from "@an/components/SideBar";
 import {baseApiUrl} from "../../../../../lib/api";
 import {CategoryWithPosts} from "@an/types/types";
-const Page = async ({params}: { params: { slug: string } }) => {
-  const category = await fetch(baseApiUrl + `/categories/${params.slug}`)
+const Page = async ({params, searchParams}: { params: { slug: string }, searchParams: {search: string} }) => {
+  const category = await fetch(baseApiUrl + `/categories/${params.slug}?search=${searchParams.search || ''}`)
       .then(res => res.json())
       .then(value => value as CategoryWithPosts);
-  console.log("category slug", category);
   return (
       <>
         <div className="mr-2 md:mr-4 ml-2">

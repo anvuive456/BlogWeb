@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
                                      children,
                                    }: {
-  children: React.ReactNode
+  children: React.ReactNode,
 }) {
   return (
       <main className="max-w-5xl mx-auto pb-10 pt-10">
@@ -25,7 +25,7 @@ export default function RootLayout({
           <div className='w-2/3 max-md:w-full'>
             {children}
           </div>
-          <SideBar/>
+          <SideBar />
         </div>
       </main>
   )

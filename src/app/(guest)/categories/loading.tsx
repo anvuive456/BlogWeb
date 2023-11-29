@@ -1,9 +1,8 @@
 const PlaceHolder = ()=>{
   return (
       <>
-
         <div role="status"
-             className="max-w-sm p-4 animate-pulse md:p-6 ">
+             className=" p-4 w-1/2 animate-pulse md:p-6 ">
           <div className="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700">
             <svg className="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true"
                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
@@ -18,7 +17,6 @@ const PlaceHolder = ()=>{
           <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
           <span className="sr-only">Loading...</span>
         </div>
-
       </>
   )
 }
@@ -26,10 +24,12 @@ const PlaceHolder = ()=>{
 const Loading = ()=> {
   return (
       <>
-        <PlaceHolder/>
-        <PlaceHolder/>
-        <PlaceHolder/>
-        <PlaceHolder/>
+        <div className='flex flex-wrap'>
+          <PlaceHolder/>
+          <PlaceHolder/>
+          <PlaceHolder/>
+          <PlaceHolder/>
+        </div>
       </>
   )
 }

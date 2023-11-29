@@ -9,7 +9,8 @@ const inter = Inter({subsets: ['latin']});
 // const popin = Poppins({subsets:['latin'],weight:['100','200','300','400','500','600','900']});
 
 export const metadata: Metadata = {
-  title: 'Danh mục',
+  title: 'Trang chủ',
+  description: 'Xem các bài đăng',
 }
 
 
@@ -25,9 +26,8 @@ export default function RootLayout({
         <div className="flex flex-wrap overflow-hidden">
           <div className='w-2/3 max-md:w-full'>
             {children}
-
           </div>
-          <SideBar/>
+          <SideBar />
         </div>
       </main>
   )
