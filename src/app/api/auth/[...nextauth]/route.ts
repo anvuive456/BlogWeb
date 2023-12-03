@@ -8,7 +8,7 @@ import {PrismaAdapter} from "@auth/prisma-adapter";
 import * as bcrypt  from 'bcrypt';
 
 
-export const OPTIONS: NextAuthOptions = {
+const options: NextAuthOptions = {
   session:{
     maxAge: 24 * 60 * 60,
     strategy:'jwt'
@@ -36,7 +36,7 @@ export const OPTIONS: NextAuthOptions = {
             });
 
             if (!user) return null;
-            
+
             return {
               id: user.id.toString(),
               email: user.email,
@@ -52,6 +52,6 @@ export const OPTIONS: NextAuthOptions = {
   ]
 }
 
-export const handler = NextAuth(OPTIONS);
+ const handler = NextAuth(options);
 
 export {handler as GET, handler as POST}
