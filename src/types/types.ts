@@ -7,3 +7,9 @@ export type CategoryWithPosts = Category & {
 export type PostWithAuthor = Post & {
   author: User
 }
+
+export type PostWithCategory = Post & {
+  category: Category
+}
+
+export type PostFullOptions = PostWithAuthor & PostWithCategory;

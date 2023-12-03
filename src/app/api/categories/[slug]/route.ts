@@ -8,6 +8,8 @@ export const GET = async (req: NextRequest, {params}: {
 }) => {
   const {searchParams} = new URL(req.url);
   const search = searchParams.get('search') ?? '';
+  const page = Number(searchParams.get('page')) || 1;
+  const limit = Number(searchParams.get('limit')) || 10;
 
   console.log(search);
   const category = await prisma.category.findUnique({
@@ -21,7 +23,9 @@ export const GET = async (req: NextRequest, {params}: {
             contains: search,
             mode: 'insensitive'
           }
-        }
+        },
+        skip: (page - 1) * limit,
+        take: limit
       },
       _count: {
         select: {
