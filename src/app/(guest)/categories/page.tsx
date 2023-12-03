@@ -44,8 +44,8 @@ export default async function Page() {
                     href={`./categories/${category.slug}`} className="block text-sm italic font-light">View All →</a></h2>
                 <div className="flex flex-wrap overflow-hidden mb-10">
                   {
-                      category.posts && category.posts.map(post =>
-                          <PortraitArticleCard key={post.slug} post={post}/>
+                      category.posts && category.posts.map((post,index) =>
+                          <PortraitArticleCard key={post.slug} post={post} index={index}/>
                       )
                   }
                 </div>

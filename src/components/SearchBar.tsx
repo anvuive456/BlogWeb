@@ -9,11 +9,11 @@ const SearchBar = ()=>{
 
   return (
       <div className="relative border rounded-sm overflow-hidden">
-        <form>
-          <input className="w-full relative py-4 pr-10 pl-4 font-light text-gray-900 border-0"
+        <form className='flex flex-row items-center'>
+          <input className="w-full  py-4 pr-10 pl-4 font-light text-gray-900 border-0"
                  type="text" name="search" defaultValue={search} id="" placeholder="Tìm bài viết..."/>
           <button type="submit"
-                  className="bg-transparent border-0 absolute right-0 px-5 top-2">
+                  className="bg-transparent border-0  px-5 ">
                                     <span className="block w-5">
                                         <svg className="fill-current" xmlns="http://www.w3.org/2000/svg"
                                              viewBox="0 0 512 512"><path
