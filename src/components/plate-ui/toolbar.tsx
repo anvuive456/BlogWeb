@@ -5,8 +5,8 @@ import { ReactNode } from 'react';
 import * as ToolbarPrimitive from '@radix-ui/react-toolbar';
 import { cva, VariantProps } from 'class-variance-authority';
 
-import { cn } from '@/lib/utils';
-import { Icons } from '@/components/icons';
+import { cn } from '@an/lib/utils';
+import { Icons } from '@an/components/icons';
 
 import { Separator } from './separator';
 import { ToggleProps, toggleVariants } from './toggle';

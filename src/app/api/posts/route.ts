@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import prisma from "../../../../lib/prisma";
 import {getServerSession} from "next-auth";
 import {redirect} from "next/navigation";
+import {slugGenerate} from "../../../../lib/slug_generator";
 
 
 export const GET = async (req: NextRequest) => {
@@ -67,13 +68,34 @@ export const GET = async (req: NextRequest) => {
 
 }
 export const POST = async (req: NextRequest) => {
-  const session = await getServerSession();
-  if (!session || !session.user) redirect('/api/auth/signin');
-  const body = await req.json();
+  try {
+    // const session = await getServerSession();
+    // console.log(session);
+    // if (!session || !session.user) return NextResponse.json({message: 'Unauthorized',}, {status: 401});
 
-  const post = prisma.post.create({
-    data: body,
-  });
+    const form = await req.formData();
+    const title = form.get('title')?.toString() || '';
+    const content = form.get('content')?.toString() || '';
+    let slug = form.get('slug')?.toString() || '';
+    if (!slug) slug = slugGenerate(title);
+    let url = form.get('url')?.toString() || '';
+    if (!url) url = `/posts/${slug}`;
+    const cateId = form.get('categoryId')?.toString() || '';
+    const post = await prisma.post.create({
+              data: {
+                title, content, slug, url,
+                authorId: 'clpkq2u5w00001mgv8rb36ckr',
+                categoryId: Number(cateId)
+              },
+            }
+        )
+    ;
 
-  return NextResponse.json({post});
+    return NextResponse.json({post});
+  } catch
+      (e) {
+    console.log(e);
+    return NextResponse.json({message: 'Nene'}, {status: 400});
+  }
+
 }

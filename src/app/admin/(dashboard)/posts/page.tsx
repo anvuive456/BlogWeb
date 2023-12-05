@@ -1,9 +1,11 @@
+'use client'
+
 import {api, baseApiUrl} from "../../../../../lib/api";
 import Link from "next/link";
-import {Suspense} from "react";
+import {Suspense, useEffect, useState} from "react";
 import AppDate from "@an/components/AppDate";
 import {PostWithCategory} from "@an/types/types";
-import PostTable from "@an/app/admin/(dashboard)/posts/_components/PostTable";
+import {useRouter, useSearchParams} from "next/navigation";
 
 type _State = {
   posts: PostWithCategory[],
@@ -15,22 +17,10 @@ type _State = {
   }
 };
 
-type Props = {
-  params: {
-    slug: string
-  },
-  searchParams: {
-    page: number
-  }
-}
-
-
 
 const Loading = () => {
-  return <tbody>
-  <tr>
-    <td className='row-span-7'>
-      <div role="status">
+  return (
+      <div role="status" className='h-96 flex flex-col items-center justify-center'>
         <svg aria-hidden="true"
              className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
              viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,9 +33,38 @@ const Loading = () => {
         </svg>
         <span className="sr-only">Loading...</span>
       </div>
-    </td>
-  </tr>
-  </tbody>;
+  );
+}
+const TableRow = ({post}: { post: PostWithCategory }) => {
+  return (
+      <>
+        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <td className="w-10 p-4 ">
+            {post.slug}
+          </td>
+          <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          </th>
+          <td className="px-6 py-4 w-48 line-clamp-2">
+            {post.title}
+          </td>
+          <td className="px-6 py-4">
+            <AppDate dateString={post.createdAt.toString()}/>
+          </td>
+          <td className="px-6 py-4">
+            {post.category.name}
+          </td>
+
+          <td className="px-6 py-4 ">
+            <div className='flex flex-row gap-3 justify-center items-center'>
+              <Link href={`/admin/posts/${post.slug}`}
+                    className="transition-all duration-200 text-lg font-normal text-blue-600 dark:text-blue-500 hover:underline">Sửa</Link>
+              <Link href="#"
+                    className="transition-all duration-200 text-lg font-normal text-red-600 dark:text-red-500 hover:underline">Xoá</Link>
+            </div>
+          </td>
+        </tr>
+      </>
+  )
 }
 
 const TotalPage = async ({page}: { page: number }) => {
@@ -58,70 +77,133 @@ const TotalPage = async ({page}: { page: number }) => {
                 </span>
 }
 
-const Page = async ({params, searchParams}: Props) => {
-  console.log("queryParams",searchParams);
-  console.log("params",params);
+const Page = () => {
+  const [state, setState] = useState<_State | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  const getPosts = async () => {
+    setLoading(true);
+    const data = await fetch(baseApiUrl + `/posts?page=${page}&limit=10`).then(res => res.json());
+    setState(data);
+    setLoading(false);
+  }
+  const moveToPage = (nexPage: number) => {
+    setPage(nexPage);
+  }
+  useEffect(() => {
+    getPosts();
+  }, [page]);
+
+  const canBack = () => {
+    if (!state?.pageCount) return false;
+    return page > 1;
+  }
+  const canNext = () => {
+    if (!state?.pageCount) return false;
+    return page < (state.pageCount);
+  }
+
   return (
       <>
-        <div className="p-4 sm:ml-64">
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="p-4 w-32">
-                  #
-                </th>
-                <th scope="col" className="px-6 py-3 ">
-                  Hình ảnh
-                </th>
-                <th scope="col" className="px-6 py-3 ">
-                  Tiêu đề
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Ngày tạo
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Danh mục
-                </th>
-                <th scope="col" className="px-6 py-3">
-                </th>
+        <button
+            onClick={()=> router.replace('/admin/posts/create')}
+            className='p-2 border rounded bg-cyan-400 hover:bg-cyan-500 transition-all duration-300 text-white'>
+          Thêm bài viết
+        </button>
 
-              </tr>
-              </thead>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          {
+            loading ? <Loading/> :
+                <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" className="p-4 w-32">
+                      #
+                    </th>
+                    <th scope="col" className="px-6 py-3 ">
+                      Hình ảnh
+                    </th>
+                    <th scope="col" className="px-6 py-3 ">
+                      Tiêu đề
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Ngày tạo
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Danh mục
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                    </th>
 
-              <Suspense fallback={<Loading/>}>
-                <PostTable page={searchParams.page}/>
-              </Suspense>
+                  </tr>
+                  </thead>
+
+                  <tbody>
+                  {state?.posts && state?.posts.map((post: PostWithCategory) =>
+                      <tr key={post.id}
+                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td className="w-10 p-4 ">
+                          {post.slug}
+                        </td>
+                        <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        </th>
+                        <td className="px-6 py-4 w-48 line-clamp-2">
+                          {post.title}
+                        </td>
+                        <td className="px-6 py-4">
+                          <AppDate dateString={post.createdAt.toString()}/>
+                        </td>
+                        <td className="px-6 py-4">
+                          {post.category.name}
+                        </td>
+
+                        <td className="px-6 py-4 ">
+                          <div className='flex flex-row gap-3 justify-center items-center'>
+                            <Link href={`/admin/posts/${post.slug}`}
+                                  className="transition-all duration-200 text-lg font-normal text-blue-600 dark:text-blue-500 hover:underline">Sửa</Link>
+                            <Link href="#"
+                                  className="transition-all duration-200 text-lg font-normal text-red-600 dark:text-red-500 hover:underline">Xoá</Link>
+                          </div>
+                        </td>
+                      </tr>
+                  )}
+                  </tbody>
+                </table>
+
+          }
+
+          <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between p-4"
+               aria-label="Table navigation">
+              <span
+                  className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span
+                  className="font-semibold text-gray-900 dark:text-white">{state?.pagination.from}-{state?.pagination.to}</span> of <span
+                  className="font-semibold text-gray-900 dark:text-white">{state?.count}</span>
+                </span>
 
 
-            </table>
-            <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-                 aria-label="Table navigation">
-              <Suspense fallback={
-                <div className='animate-pulse'>
-                  <div className="h-2 bg-slate-200 rounded col-span-2"></div>
-                </div>
-              }>
-                <TotalPage page={searchParams.page}/>
-              </Suspense>
-
-
-              <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-                <li>
-                  <Link
-                      href={`/admin/posts?page=${searchParams.page--}`}
+            <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+              {
+                canBack() ? <li>
+                  <button
+                      onClick={() => moveToPage(page - 1)}
                       className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                      href={`/admin/posts?page=${searchParams.page++}`}
-                      className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
+                  </button>
+                </li> : <></>
+              }
+              {
+                canNext() ?
+                    <li>
+                      <button
+                          onClick={() => moveToPage(page + 1)}
+                          className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next
+                      </button>
+                    </li> : <></>
+              }
+
+            </ul>
+          </nav>
         </div>
       </>
   )
