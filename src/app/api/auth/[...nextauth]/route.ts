@@ -9,6 +9,8 @@ import * as bcrypt  from 'bcrypt';
 
 
 const options: NextAuthOptions = {
+  secret:process.env.NEXTAUTH_SECRET,
+
   session:{
     maxAge: 24 * 60 * 60,
     strategy:'jwt'
