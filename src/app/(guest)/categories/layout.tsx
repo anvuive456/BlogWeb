@@ -25,7 +25,10 @@ export default function RootLayout({
             {children}
 
           </div>
-          <SideBar/>
+          <Suspense>
+            <SideBar/>
+
+          </Suspense>
         </div>
       </main>
   )

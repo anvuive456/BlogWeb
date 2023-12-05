@@ -3,6 +3,7 @@ import {getCategoryPosts} from "@an/app/(guest)/categories/action";
 import LoadMore from "@an/app/(guest)/categories/_components/LoadMore";
 import {CategoryWithPosts} from "@an/types/types";
 import {baseApiUrl} from "../../../../../lib/api";
+import {Suspense} from "react";
 const Page = async ({params, searchParams}: { params: { slug: string }, searchParams: {search: string} }) => {
   const category = await fetch(baseApiUrl + `/categories/${params.slug}?search=${searchParams.search || ''}`)
       .then(res => res.json())
@@ -19,7 +20,9 @@ const Page = async ({params, searchParams}: { params: { slug: string }, searchPa
                 )
             }
           </div>
-          <LoadMore slug={params.slug}/>
+          <Suspense>
+            <LoadMore slug={params.slug}/>
+          </Suspense>
         </div>
       </>
   )

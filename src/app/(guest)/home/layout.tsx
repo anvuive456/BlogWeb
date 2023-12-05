@@ -23,7 +23,9 @@ export default function RootLayout({
           <div className='w-2/3 max-md:w-full'>
             {children}
           </div>
-          <SideBar />
+          <Suspense>
+            <SideBar />
+          </Suspense>
         </div>
       </main>
   )
