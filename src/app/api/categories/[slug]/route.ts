@@ -11,7 +11,7 @@ export const GET = async (req: NextRequest, {params}: {
   const page = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
 
-  console.log(search);
+
   const category = await prisma.category.findUnique({
     where: {
       slug: params.slug,
@@ -22,7 +22,8 @@ export const GET = async (req: NextRequest, {params}: {
           title: {
             contains: search,
             mode: 'insensitive'
-          }
+          },
+          published:true
         },
         skip: (page - 1) * limit,
         take: limit
@@ -34,7 +35,8 @@ export const GET = async (req: NextRequest, {params}: {
               title: {
                 contains: search,
                 mode: 'insensitive'
-              }
+              },
+              published:true
             }
           }
         }

@@ -16,8 +16,28 @@ export default function IndexPage() {
   useEffect(() => {
     getCategories();
   }, []);
+
+  const toBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result as string);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
   const submit = async (form: FormData) => {
     form.set('content', JSON.stringify(content));
+    const file = form.get('image') as File | null;
+    if (file) {
+      form.set('imageString', await toBase64(file));
+    }
     const result = await fetch(baseApiUrl + '/posts', {
       method: 'POST',
       body: form,
@@ -29,7 +49,8 @@ export default function IndexPage() {
       <>
         <div className='p-4 bg-blue-50 h-screen'>
           <form action={submit}>
-            <input name='title' className='border rounded p-2 mb-2 w-full' placeholder='Nhập tiêu đề '/>
+            <input name='title' className='border rounded p-2 mb-2 w-full' placeholder='Nhập tiêu đề ' required={true}/>
+            <input name='description' className='border rounded p-2 mb-2 w-full' placeholder='Thêm mô tả'/>
             <div className='flex flex-wrap mb-2 gap-2'>
               <select  placeholder='Chọn danh mục' className='border rounded p-2  w-1/4' name='categoryId'>
                 {
@@ -38,6 +59,8 @@ export default function IndexPage() {
                     </>)
                 }
               </select>
+              <input name='image' type='file' className='border rounded p-2  w-1/4'/>
+
               <button type='submit' className='text-white border rounded bg-blue-600 p-2 '>
                 Đăng bài
               </button>

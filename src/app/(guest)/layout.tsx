@@ -1,15 +1,13 @@
 import {Inter, Poppins} from "next/font/google";
-import {Metadata} from "next";
 import AppHeader from "@an/components/AppHeader";
 import AppFooter from "@an/components/AppFooter";
-import {Suspense} from "react";
 
 const inter = Inter({subsets: ['latin']});
 // const popin = Poppins({subsets:['latin'],weight:['100','200','300','400','500','600','900']});
 
 
 
-export const revalidate = 180; // revalidate at most every hour
+export const revalidate = 180;
 
 export default function RootLayout({
                                      children,
@@ -18,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en">
-      <body >
+      <body className={inter.className}>
       <AppHeader/>
       {children}
 

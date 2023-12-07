@@ -11,6 +11,9 @@ export const GET = async (req: NextRequest) => {
             orderBy: {
               createdAt: 'desc'
             },
+            where:{
+              published:true,
+            },
             take
           }
         },

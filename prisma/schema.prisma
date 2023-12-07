@@ -20,16 +20,18 @@ model Category {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  url       String
-  slug      String   @unique @default(cuid())
-  content   String?
-  published Boolean  @default(false)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  String?
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @default("")
+  image       String   @default("")
+  url         String
+  slug        String   @unique @default(cuid())
+  content     Json[]   @default([])
+  published   Boolean  @default(false)
+  author      User?    @relation(fields: [authorId], references: [id])
+  authorId    String?
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @updatedAt @map(name: "updated_at")
 
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?

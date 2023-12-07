@@ -20,6 +20,7 @@ export const GET = async (req: NextRequest, {params}: { params: { slug: string |
 
 }
 
+
 export const PUT = async (req: NextRequest, {params}: { params: { slug: string } }) => {
   try {
     // const session = await getServerSession();
@@ -28,18 +29,29 @@ export const PUT = async (req: NextRequest, {params}: { params: { slug: string }
 
     const form = await req.formData();
     const title = form.get('title')?.toString() || '';
-    const content = form.get('content')?.toString() || '';
+    const content = form.get('content') as string | null;
+    const description = form.get('description')?.toString() || '';
     let slug = form.get('slug')?.toString() || '';
     if (!slug) slug = slugGenerate(title);
     let url = form.get('url')?.toString() || '';
     if (!url) url = `/posts/${slug}`;
     const cateId = form.get('categoryId')?.toString() || '';
+    const image = form.get('image') as File | null;
+    const imageString = form.get('imageString') as string | null;
+    let imagePath = '';
+    if (imageString) {
+      // imagePath = await uploadImage(image);
+      imagePath = imageString;
+    }
     const post = await prisma.post.update({
               where: {
                 slug: params.slug
               },
               data: {
-                title, content, slug, url,
+                title, slug, url, description, image: imagePath,
+                content: {
+                  set: JSON.parse(content ?? '[]')
+                },
                 authorId: 'clpkq2u5w00001mgv8rb36ckr',
                 categoryId: Number(cateId)
               },
@@ -54,4 +66,17 @@ export const PUT = async (req: NextRequest, {params}: { params: { slug: string }
     return NextResponse.json({message: 'Nene'}, {status: 400});
   }
 
+}
+
+export const DELETE = async (req: NextRequest, {params}: { params: { slug: string } }) => {
+  try {
+    const deleted = await prisma.post.delete({
+      where: {slug: params.slug}
+    });
+    if (deleted) return NextResponse.json({deleted: true});
+
+    return NextResponse.json({deleted: false});
+  } catch (e) {
+    return NextResponse.json({message: `Không thể xoá bài viết:${params.slug}`}, {status: 400});
+  }
 }

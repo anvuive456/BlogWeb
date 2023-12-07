@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: 'Danh mục',
 }
 
+export const revalidate = 180;
 
 export default function RootLayout({
                                      children,

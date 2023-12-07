@@ -6,6 +6,7 @@ import {baseApiUrl, baseUrl} from "../../lib/api";
 import Link from "next/link";
 import {useSearchParams} from "next/navigation";
 import SearchBar from "@an/components/SearchBar";
+import Image from "next/image";
 
 
 const Categories = async () => {
@@ -54,8 +55,9 @@ const SideBar = () => {
         <div className="md:w-1/3 sm:w-full overflow-hidden">
           <div className="ml-2 md:ml-4 mr-2">
             <div className="mt-16 sm:mt-0 text-center justify-center justify-items-center">
-              <div
-                  className=" pointer-events-none w-64 h-64 rounded-full mx-auto bg-cover bg-center bg-no-repeat bg-my-image"/>
+              <Image src={'/images/my-image.jpg'} alt={'An tran'} width={64} height={64} unoptimized={true} className='pointer-events-none w-64 h-64 rounded-full mx-auto'/>
+              {/*<div*/}
+              {/*    className=" pointer-events-none w-64 h-64 rounded-full mx-auto bg-cover bg-center bg-no-repeat bg-my-image"/>*/}
               {/*<h2 className="font-light text-xl my-5">Raalhu</h2>*/}
               {/*<p className="text-gray-900 font-thin tracking-wider leading-loose">Hi! Welcome to*/}
               {/*    Raalhu theme preview. Raalhu is a minimal blog theme built with tailwindcss. It is*/}

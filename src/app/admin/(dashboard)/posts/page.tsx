@@ -5,7 +5,7 @@ import Link from "next/link";
 import {Suspense, useEffect, useState} from "react";
 import AppDate from "@an/components/AppDate";
 import {PostWithCategory} from "@an/types/types";
-import {useRouter, useSearchParams} from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 type _State = {
   posts: PostWithCategory[],
@@ -105,11 +105,28 @@ const Page = () => {
     return page < (state.pageCount);
   }
 
+  const deletePost = async ({slug}: { slug: string }) => {
+    setLoading(true);
+    const data = await fetch(baseApiUrl + `/posts/${slug}`, {method: 'DELETE'}).then(res => res.json());
+    if (data.deleted) {
+      await getPosts();
+    }
+  }
+
+  const togglePublish = async ({id}: { id: number }) => {
+    setLoading(true);
+    const data = await fetch(baseApiUrl + `/posts/publish`, {
+      method: 'POST',
+      body: JSON.stringify({id: id})
+    }).then(res => res.json());
+    if (!data.message) await getPosts();
+  }
+
   return (
-      <>
+      <div className='p-4'>
         <button
-            onClick={()=> router.replace('/admin/posts/create')}
-            className='p-2 border rounded bg-cyan-400 hover:bg-cyan-500 transition-all duration-300 text-white'>
+            onClick={() => router.push('/admin/posts/create')}
+            className='p-2 mb-2 border rounded bg-blue-600 hover:bg-blue-500 transition-all duration-300 text-white'>
           Thêm bài viết
         </button>
 
@@ -119,7 +136,7 @@ const Page = () => {
                 <table className=" w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th scope="col" className="p-4 w-32">
+                    <th scope="col" className="p-4 w-3">
                       #
                     </th>
                     <th scope="col" className="px-6 py-3 ">
@@ -135,6 +152,9 @@ const Page = () => {
                       Danh mục
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Published
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                     </th>
 
                   </tr>
@@ -144,11 +164,11 @@ const Page = () => {
                   {state?.posts && state?.posts.map((post: PostWithCategory) =>
                       <tr key={post.id}
                           className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-10 p-4 ">
+                        <td className="w-2 p-4 ">
                           {post.slug}
                         </td>
-                        <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        </th>
+                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        </td>
                         <td className="px-6 py-4 w-48 line-clamp-2">
                           {post.title}
                         </td>
@@ -159,12 +179,26 @@ const Page = () => {
                           {post.category.name}
                         </td>
 
+                        <td className="px-6 py-4">
+                          <label className="relative inline-flex items-center me-5 cursor-pointer">
+                            <input readOnly={true} type="checkbox" onClick={() => togglePublish({id: post.id})}
+                                   className="sr-only peer" checked={post.published}/>
+                            <div
+                                className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-red-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-red-600"></div>
+                          </label>
+                        </td>
                         <td className="px-6 py-4 ">
                           <div className='flex flex-row gap-3 justify-center items-center'>
-                            <Link href={`/admin/posts/${post.slug}`}
-                                  className="transition-all duration-200 text-lg font-normal text-blue-600 dark:text-blue-500 hover:underline">Sửa</Link>
-                            <Link href="#"
-                                  className="transition-all duration-200 text-lg font-normal text-red-600 dark:text-red-500 hover:underline">Xoá</Link>
+
+                            <button
+                                onClick={() => router.push(`/admin/posts/${post.slug}`)}
+                                    className="transition-all duration-200 text-lg font-normal text-blue-600 dark:text-blue-500 hover:underline">Sửa
+                            </button>
+                            <button onClick={() => deletePost({slug: post.slug})}
+                                    className="transition-all duration-200 text-lg font-normal text-red-600 dark:text-red-500 hover:underline">Xoá
+                            </button>
+
+
                           </div>
                         </td>
                       </tr>
@@ -205,7 +239,7 @@ const Page = () => {
             </ul>
           </nav>
         </div>
-      </>
+      </div>
   )
 }
 

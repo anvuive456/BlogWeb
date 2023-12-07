@@ -3,11 +3,9 @@ import SessionProvider from "@an/components/SessionProvider";
 
 
 export default async function RootLayout({
-                                           children,
-                                           modal
+                                           children
                                          }: {
-  children: React.ReactNode,
-  modal: React.ReactNode
+  children: React.ReactNode
 }) {
   return (
       <div className="sm:ml-64">

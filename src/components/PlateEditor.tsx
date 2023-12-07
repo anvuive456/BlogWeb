@@ -117,9 +117,9 @@ import {withDraggables} from '@an/components/plate-ui/with-draggables';
 import {EmojiCombobox} from '@an/components/plate-ui/emoji-combobox';
 import {TooltipProvider} from "@an/components/plate-ui/tooltip";
 
-type Props = { editorName: string, onChange?: (value: Value) => void ,initialValue?: Value | null, value?: Value};
+type Props = { editorName: string, onChange?: (value: Value) => void, initialValue?: Value | null, value?: Value };
 
-export  const plugins = createPlugins(
+export const plugins = createPlugins(
     [
       createParagraphPlugin(),
       createHeadingPlugin(),
@@ -317,21 +317,26 @@ export  const plugins = createPlugins(
       })),
     }
 );
-export  function PlateEditor({editorName, onChange, initialValue, value}: Props) {
+
+export function PlateEditor({editorName, onChange, initialValue, value}: Props) {
 
 
-  const v = [
+  const v: Value = [
     {
       id: '1',
       type: 'h1',
       children: [{text: 'Hello, World!'}],
     },
   ];
+
+  const init: Value = (initialValue?.length || 0) == 0 ? v : initialValue!;
+  console.log('initvalue', init);
+  console.log('is emoty',);
   return (
       <TooltipProvider>
         <DndProvider backend={HTML5Backend}>
           {/*<CommentsProvider users={{}} myUserId="1">*/}
-          <Plate onChange={onChange} plugins={plugins} value={value} initialValue={initialValue ?? v}>
+          <Plate onChange={onChange} plugins={plugins} value={value} initialValue={init}>
             <FixedToolbar>
               <FixedToolbarButtons/>
             </FixedToolbar>

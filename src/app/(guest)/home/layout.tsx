@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description: 'Xem các bài đăng',
 }
 
+export const revalidate = 180;
 
 export default function RootLayout({
                                      children,

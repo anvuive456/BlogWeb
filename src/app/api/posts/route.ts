@@ -3,6 +3,7 @@ import prisma from "../../../../lib/prisma";
 import {getServerSession} from "next-auth";
 import {redirect} from "next/navigation";
 import {slugGenerate} from "../../../../lib/slug_generator";
+import {toBase64, uploadImage} from "@an/app/api/utils";
 
 
 export const GET = async (req: NextRequest) => {
@@ -15,6 +16,7 @@ export const GET = async (req: NextRequest) => {
   const page = query.get('page') || 1;
   const limit = Number(query.get('limit')) || undefined;
   const skip = (page && limit) ? (Number(page) - 1) * limit : undefined;
+  const published = Boolean(query.get('published')) || undefined;
   console.log(limit, skip);
 
   const [posts, count] =
@@ -24,11 +26,9 @@ export const GET = async (req: NextRequest) => {
             OR: [
               {
                 title: {contains: search, mode: 'insensitive'}
-              },
-              {
-                content: {contains: search, mode: 'insensitive'}
               }
-            ]
+            ],
+            published: published
           },
           orderBy: {
             [orderBy]: orderDirection,
@@ -44,11 +44,9 @@ export const GET = async (req: NextRequest) => {
             OR: [
               {
                 title: {contains: search, mode: 'insensitive'}
-              },
-              {
-                content: {contains: search, mode: 'insensitive'}
               }
-            ]
+            ],
+            published: published
           },
         })
       ]);
@@ -75,17 +73,28 @@ export const POST = async (req: NextRequest) => {
 
     const form = await req.formData();
     const title = form.get('title')?.toString() || '';
-    const content = form.get('content')?.toString() || '';
+    const content = form.get('content') as string | null;
+    const description = form.get('description')?.toString() || '';
     let slug = form.get('slug')?.toString() || '';
     if (!slug) slug = slugGenerate(title);
     let url = form.get('url')?.toString() || '';
     if (!url) url = `/posts/${slug}`;
     const cateId = form.get('categoryId')?.toString() || '';
+    const image = form.get('image') as File | null;
+    const imageString = form.get('imageString') as string | null;
+    let imagePath = '';
+    if (imageString) {
+      // imagePath = await uploadImage(image);
+      imagePath = imageString;
+    }
     const post = await prisma.post.create({
               data: {
-                title, content, slug, url,
+                title, slug, url, description, image: imagePath,
+                content:{
+                  set: JSON.parse(content ?? '[]')
+                },
                 authorId: 'clpkq2u5w00001mgv8rb36ckr',
-                categoryId: Number(cateId)
+                categoryId: Number(cateId),
               },
             }
         )
