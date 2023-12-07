@@ -33,7 +33,10 @@ export async function generateMetadata({params, searchParams}: Props,
 
 
 const Page = async ({params}: Props) => {
-  const body = await fetch(baseApiUrl + `/posts/${params.slug}`).then(res => res.json()).catch(console.log);
+  const body = await fetch(baseApiUrl + `/posts/${params.slug}`).then(res => res.json()).catch(reason =>{
+    console.log(reason);
+    return {};
+  });
 
   if (!body.post) {
     notFound();
