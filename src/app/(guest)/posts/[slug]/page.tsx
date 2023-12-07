@@ -20,7 +20,7 @@ export async function generateMetadata({params, searchParams}: Props,
   const {post} = body;
   return {
     title: post.title,
-    metadataBase: new URL(post.url),
+    metadataBase: new URL(baseUrl + '/' + post.url),
     openGraph: {
       title: post.title,
       type: 'article',
