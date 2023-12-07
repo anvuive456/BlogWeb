@@ -7,7 +7,9 @@ import {
   withProps,
   PlateElement,
   PlateLeaf,
-  Value
+  Value,
+  isBlockAboveEmpty,
+  isSelectionAtBlockStart,
 } from '@udecode/plate-common';
 import {createParagraphPlugin, ELEMENT_PARAGRAPH} from '@udecode/plate-paragraph';
 import {
@@ -119,6 +121,17 @@ import {TooltipProvider} from "@an/components/plate-ui/tooltip";
 
 type Props = { editorName: string, onChange?: (value: Value) => void, initialValue?: Value | null, value?: Value };
 
+
+const resetBlockTypesCommonRule = {
+  types: [ELEMENT_BLOCKQUOTE, ELEMENT_TODO_LI],
+  defaultType: ELEMENT_PARAGRAPH,
+};
+
+const resetBlockTypesCodeBlockRule = {
+  types: [ELEMENT_CODE_BLOCK],
+  defaultType: ELEMENT_PARAGRAPH,
+  // onReset: unwrapCodeBlock,
+};
 export const plugins = createPlugins(
     [
       createParagraphPlugin(),
@@ -139,7 +152,7 @@ export const plugins = createPlugins(
           ]
         },
       }),
-      createMentionPlugin(),
+      // createMentionPlugin(),
       createTablePlugin(),
       createTodoListPlugin(),
       // createExcalidrawPlugin(),
@@ -221,6 +234,26 @@ export const plugins = createPlugins(
       createResetNodePlugin({
         options: {
           rules: [
+            {
+              ...resetBlockTypesCommonRule,
+              hotkey: 'Enter',
+              predicate: isBlockAboveEmpty,
+            },
+            {
+              ...resetBlockTypesCommonRule,
+              hotkey: 'Backspace',
+              predicate: isSelectionAtBlockStart,
+            },
+            // {
+            //   ...resetBlockTypesCodeBlockRule,
+            //   hotkey: 'Enter',
+            //   predicate: isCodeBlockEmpty,
+            // },
+            // {
+            //   ...resetBlockTypesCodeBlockRule,
+            //   hotkey: 'Backspace',
+            //   predicate: isSelectionAtCodeBlockStart,
+            // },
             // Usage: https://platejs.org/docs/reset-node
           ],
         },
@@ -229,7 +262,7 @@ export const plugins = createPlugins(
         options: {
           query: {
             allow: [
-              // ELEMENT_IMAGE, ELEMENT_HR
+              ELEMENT_IMAGE, ELEMENT_HR
             ],
           },
         },
@@ -254,7 +287,7 @@ export const plugins = createPlugins(
       createTrailingBlockPlugin({
         options: {type: ELEMENT_PARAGRAPH},
       }),
-      createCommentsPlugin(),
+      // createCommentsPlugin(),
       createAutoformatPlugin({
         options: {
           rules: [
@@ -330,8 +363,7 @@ export function PlateEditor({editorName, onChange, initialValue, value}: Props) 
   ];
 
   const init: Value = (initialValue?.length || 0) == 0 ? v : initialValue!;
-  console.log('initvalue', init);
-  console.log('is emoty',);
+
   return (
       <TooltipProvider>
         <DndProvider backend={HTML5Backend}>
@@ -346,8 +378,8 @@ export function PlateEditor({editorName, onChange, initialValue, value}: Props) 
             <FloatingToolbar>
               <FloatingToolbarButtons/>
             </FloatingToolbar>
-            <MentionCombobox items={[]}/>
-            <CommentsPopover/>
+            {/*<MentionCombobox items={[]}/>*/}
+            {/*<CommentsPopover/>*/}
           </Plate>
           {/*</CommentsProvider>*/}
 
