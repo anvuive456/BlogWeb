@@ -25,9 +25,9 @@ const PortraitArticleCard = ({post, index}: { post: Post, index: number }) => {
                 width={800}
                 height={600}
                 alt={post.title}/>
-            <h2 className=" text-gray-900 font-thin font-serif text-xl my-3"><a
+            <h2 className=" text-gray-900 font-thin font-serif max-sm:text-sm text-xl my-3"><a
                 href={post.url}>{post.title}</a></h2>
-            <p className="line-clamp-3 text-gray-900 font-thin tracking-wider leading-tight">{post.description}...</p>
+            <p className="line-clamp-3 text-gray-900 font-thin tracking-wider leading-tight max-sm:text-sm">{post.description}...</p>
             <AppDate className='font-light absolute bottom-0' dateString={post.updatedAt.toString()}/>
             {/*<a href={post.url}*/}
             {/*   className="absolute bottom-1 inline-block pt-5 text-sm font-medium tracking-wider">Đọc thêm...</a>*/}
