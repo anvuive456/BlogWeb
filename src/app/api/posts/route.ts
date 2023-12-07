@@ -1,9 +1,6 @@
 import {NextRequest, NextResponse} from "next/server";
 import prisma from "../../../../lib/prisma";
-import {getServerSession} from "next-auth";
-import {redirect} from "next/navigation";
 import {slugGenerate} from "../../../../lib/slug_generator";
-import {toBase64, uploadImage} from "@an/app/api/utils";
 
 
 export const GET = async (req: NextRequest) => {

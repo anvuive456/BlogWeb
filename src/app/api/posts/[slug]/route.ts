@@ -1,5 +1,4 @@
 import {NextRequest, NextResponse} from "next/server";
-import {Post, Prisma} from "@prisma/client";
 import prisma from "../../../../../lib/prisma";
 import {slugGenerate} from "../../../../../lib/slug_generator";
 
