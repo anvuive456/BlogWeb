@@ -4,9 +4,11 @@ import AppHeader from "@an/components/AppHeader";
 import AppFooter from "@an/components/AppFooter";
 import {Suspense} from "react";
 import SideBar from "@an/components/SideBar";
+import {baseUrl} from "../../../../lib/api";
 
 
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl + '/categories'),
   title: 'Danh mục',
 }
 
