@@ -6,8 +6,8 @@ const AppFooter = ()=> {
          <footer className="bg-gray-100 text-center sm:text-left">
              <div className="max-w-5xl mx-auto pb-10 pt-10 text-gray-900">
                  <ul>
-                     <li className="inline-block"><a className="block font-semibold mx-3" href="/">Trang chủ</a></li>
-                     <li className="inline-block"><Link className="block font-semibold mx-3" href="categories">Danh mục</Link></li>
+                     <li className="inline-block"><Link className="block font-semibold mx-3" href="/">Trang chủ</Link></li>
+                     <li className="inline-block"><Link className="block font-semibold mx-3" href="/categories">Danh mục</Link></li>
                      <li className="inline-block"><Link className="block font-semibold mr-3" href="/about">Về tôi</Link></li>
                  </ul>
                  <div className="sm:flex px-3">

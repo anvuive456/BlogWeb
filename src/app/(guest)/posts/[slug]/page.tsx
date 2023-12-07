@@ -20,20 +20,20 @@ export async function generateMetadata({params, searchParams}: Props,
   const {post} = body;
   return {
     title: post.title,
+    metadataBase: new URL(post.url),
     openGraph: {
       title: post.title,
       type: 'article',
       description: post.description,
       siteName: baseUrl,
       url: post.url,
-      images: [baseUrl + '/' + post.image]
     }
   }
 }
 
 
 const Page = async ({params}: Props) => {
-  const body = await fetch(baseApiUrl + `/posts/${params.slug}`).then(res => res.json()).catch(reason =>{
+  const body = await fetch(baseApiUrl + `/posts/${params.slug}`).then(res => res.json()).catch(reason => {
     console.log(reason);
     return {};
   });
