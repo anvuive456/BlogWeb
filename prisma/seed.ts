@@ -41,7 +41,7 @@ async function main() {
             id: admin.id
           }
         },
-        content: '',
+        content: {set:[]},
         url: process.env.BASE_URL + '/' + 'home' + '/' + 'posts' + '/' + slugGenerate('Rừng Tà Năng – Phan Dũng có gì thu hút? Những lưu ý khi tới đây')
       }
     })
