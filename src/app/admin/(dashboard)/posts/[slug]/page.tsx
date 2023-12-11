@@ -117,7 +117,7 @@ const Page = ({params}: { params: { slug: string } }) => {
                    placeholder='Thêm mô tả'/>
 
             <div className='flex flex-wrap mb-2 gap-2'>
-              <select defaultValue={selectedCate} placeholder='Chọn danh mục' className='border rounded p-2  w-1/4'
+              <select defaultValue={selectedCate} className='border rounded p-2  w-1/4'
                       name='categoryId'>
                 {
                     categories && categories.map(cate => <>

@@ -84,7 +84,7 @@ export default function IndexPage() {
             <input name='title' className='border rounded p-2 mb-2 w-full' placeholder='Nhập tiêu đề ' required={true}/>
             <input name='description' className='border rounded p-2 mb-2 w-full' placeholder='Thêm mô tả'/>
             <div className='flex flex-wrap mb-2 gap-2'>
-              <select placeholder='Chọn danh mục' className='border rounded p-2  w-1/4' name='categoryId'>
+              <select className='border rounded p-2  w-1/4' name='categoryId'>
                 {
                     categories && categories.map(cate => <>
                       <option value={cate.id}>{cate.name}</option>
