@@ -60,7 +60,10 @@ import {
   WrapText,
   X,
   Paperclip,
-  DownloadCloud, Combine, Ungroup
+  DownloadCloud, Combine, Ungroup,
+  Facebook,
+  Instagram,
+  Linkedin
 } from 'lucide-react';
 
 import type {LucideIcon} from 'lucide-react';
@@ -250,6 +253,9 @@ export const Icons = {
   moon: Moon,
   sun: SunMedium,
   twitter: Twitter,
+  facebook: Facebook,
+  instagram: Instagram,
+  linkedin: Linkedin
 };
 
 export const iconVariants = cva('', {

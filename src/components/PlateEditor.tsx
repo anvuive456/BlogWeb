@@ -354,15 +354,15 @@ export const plugins = createPlugins(
 export function PlateEditor({editorName, onChange, initialValue, value}: Props) {
 
 
-  const v: Value = [
-    {
-      id: '1',
-      type: 'h1',
-      children: [{text: 'Hello, World!'}],
-    },
-  ];
+  // const v: Value = [
+  //   {
+  //     id: '1',
+  //     type: 'h1',
+  //     children: [{text: 'Hello, World!'}],
+  //   },
+  // ];
 
-  const init: Value = (initialValue?.length || 0) == 0 ? v : initialValue!;
+  const init: Value | undefined = (initialValue?.length || 0) == 0 ? undefined : initialValue!;
 
   return (
       <TooltipProvider>

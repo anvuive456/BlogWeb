@@ -8,6 +8,6 @@ export const getCategoryPosts = async ({slug, page, limit = 10}: { slug: string,
   const posts = await fetch(baseApiUrl + `/categories/${slug}?page=${page}&limit=${limit}`).then(res => res.json());
   const data = posts as CategoryWithPosts;
   return data.posts.map((post, index) =>
-      <PortraitArticleCard post={post} index={index}/>
+      <PortraitArticleCard key={post.id} post={post} index={index}/>
   );
 }

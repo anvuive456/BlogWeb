@@ -7,7 +7,6 @@ const inter = Inter({subsets: ['latin']});
 
 
 
-export const revalidate = 180;
 
 export default function RootLayout({
                                      children,

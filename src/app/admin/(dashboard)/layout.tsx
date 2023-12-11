@@ -1,6 +1,3 @@
-import {getServerSession} from "next-auth";
-import SessionProvider from "@an/components/SessionProvider";
-
 
 export default async function RootLayout({
                                            children

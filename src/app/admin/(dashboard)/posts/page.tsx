@@ -6,6 +6,7 @@ import {Suspense, useEffect, useState} from "react";
 import AppDate from "@an/components/AppDate";
 import {PostWithCategory} from "@an/types/types";
 import { useRouter } from 'next/navigation';
+import Image from "next/image";
 
 type _State = {
   posts: PostWithCategory[],
@@ -167,7 +168,8 @@ const Page = () => {
                         <td className="w-2 p-4 ">
                           {post.slug}
                         </td>
-                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <td className="px-6 py-4 ">
+                          <Image src={post.image} alt={post.title} width={300} height={200} />
                         </td>
                         <td className="px-6 py-4 w-48 line-clamp-2">
                           {post.title}

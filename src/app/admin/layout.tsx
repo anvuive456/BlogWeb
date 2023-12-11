@@ -1,21 +1,25 @@
 import {getServerSession} from "next-auth";
 import SessionProvider from "@an/components/SessionProvider";
 import AdminSideBar from "@an/components/AdminSideBar";
-
-
+import ToastProvider from "@an/components/modal/ToastProvider";
 
 
 export default async function RootLayout({
-                                     children,
-                                   }: {
+                                           children,
+                                         }: {
   children: React.ReactNode,
 }) {
-  const session = await  getServerSession();
+  const session = await getServerSession();
   return (
-      <SessionProvider session={session} >
-        <AdminSideBar/>
+      <SessionProvider session={session}>
+        <div suppressHydrationWarning>
+          <ToastProvider>
+            <AdminSideBar/>
 
-        {children}
+            {children}
+          </ToastProvider>
+        </div>
+
       </SessionProvider>
 
   )

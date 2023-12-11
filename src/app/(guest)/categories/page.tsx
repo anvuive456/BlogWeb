@@ -1,7 +1,5 @@
-import SideBar from "@an/components/SideBar";
 import {CategoryWithPosts} from "@an/types/types";
 import PortraitArticleCard from "@an/components/PortraitArticleCard";
-import {Suspense} from "react";
 import {baseApiUrl} from "../../../../lib/api";
 
 

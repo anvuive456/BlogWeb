@@ -1,18 +1,23 @@
 'use client'
 
-import {useSearchParams} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useRef} from "react";
 
-const SearchBar = ()=>{
-
+const SearchBar = () => {
+  const router = useRouter();
   const params = useSearchParams();
   const search = params.get('search') ?? '';
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const submit = () => {
+    router.push(`/posts?search=${inputRef.current?.value || ''}&page=1`);
+  }
   return (
       <div className="relative border rounded-sm overflow-hidden">
         <form className='flex flex-row items-center'>
-          <input className="w-full  py-4 pr-10 pl-4 font-light text-gray-900 border-0"
+          <input ref={inputRef} className="w-full  py-4 pr-10 pl-4 font-light text-gray-900 border-0"
                  type="text" name="search" defaultValue={search} id="" placeholder="Tìm bài viết..."/>
-          <button type="submit"
+          <button onClick={submit}
                   className="bg-transparent border-0  px-5 ">
                                     <span className="block w-5">
                                         <svg className="fill-current" xmlns="http://www.w3.org/2000/svg"

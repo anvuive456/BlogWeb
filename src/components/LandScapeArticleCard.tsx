@@ -7,3 +7,5 @@ const LandScapeArticleCard = ({post} : {post: Post})=>{
       </>
   )
 }
+
+export default LandScapeArticleCard;
