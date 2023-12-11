@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss'
+import type {Config} from 'tailwindcss'
 
 const config: Config = {
   content: [
@@ -8,8 +8,8 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage:{
-        'my-image':'url(/images/my-image.jpg)'
+      backgroundImage: {
+        'my-image': 'url(/images/my-image.jpg)'
       }
     },
   },

@@ -4,6 +4,12 @@ export type CategoryWithPosts = Category & {
   posts: Post[]
 }
 
+export type CategoryWithCountPost = Category & {
+  _count: {
+    posts: number
+  }
+}
+
 export type PostWithAuthor = Post & {
   author: User
 }

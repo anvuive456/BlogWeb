@@ -51,7 +51,6 @@ export const PUT = async (req: NextRequest, {params}: { params: { slug: string }
                 content: {
                   set: JSON.parse(content ?? '[]')
                 },
-                authorId: 'clpkq2u5w00001mgv8rb36ckr',
                 categoryId: Number(cateId)
               },
             }
@@ -62,7 +61,7 @@ export const PUT = async (req: NextRequest, {params}: { params: { slug: string }
   } catch
       (e) {
     console.log(e);
-    return NextResponse.json({message: 'Nene'}, {status: 400});
+    return NextResponse.json({message: `Không thể update bài viết: ${e}`}, {status: 400});
   }
 
 }

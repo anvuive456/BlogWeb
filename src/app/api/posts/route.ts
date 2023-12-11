@@ -10,7 +10,7 @@ export const GET = async (req: NextRequest) => {
   const search = query.get('search') ?? '';
   const orderBy = query.get('orderBy') ?? 'createdAt';
   const orderDirection = query.get('orderDirection') ?? 'desc';
-  const page = query.get('page') || 1;
+  const page = query.get('page') || 0;
   const limit = Number(query.get('limit')) || undefined;
   const skip = (page && limit) ? (Number(page) - 1) * limit : undefined;
   const published = Boolean(query.get('published')) || undefined;
@@ -50,7 +50,7 @@ export const GET = async (req: NextRequest) => {
 
   const pageCount = Math.ceil(count / (limit || 1));
   const from = (Number(page) - 1) * (limit || 0) + 1;
-  const to = from - 1 + (limit || 0);
+  const to = Math.min(from - 1 + (limit || 0), count);
   return NextResponse.json({
     posts,
     count,
@@ -78,7 +78,7 @@ export const POST = async (req: NextRequest) => {
     if (!url) url = `/posts/${slug}`;
     const cateId = form.get('categoryId')?.toString() || '';
     const image = form.get('image') as File | null;
-    const imageString = form.get('imageString') as string | null;
+    const imageString = form.get('imageString') as string | undefined;
     let imagePath = '';
     if (imageString) {
       // imagePath = await uploadImage(image);
@@ -90,7 +90,7 @@ export const POST = async (req: NextRequest) => {
                 content:{
                   set: JSON.parse(content ?? '[]')
                 },
-                authorId: 'clpkq2u5w00001mgv8rb36ckr',
+                // authorId: 'clpkq2u5w00001mgv8rb36ckr',
                 categoryId: Number(cateId),
               },
             }
@@ -101,7 +101,7 @@ export const POST = async (req: NextRequest) => {
   } catch
       (e) {
     console.log(e);
-    return NextResponse.json({message: 'Nene'}, {status: 400});
+    return NextResponse.json({message: `Không thể tạo bài viết:${e}`}, {status: 400});
   }
 
 }
