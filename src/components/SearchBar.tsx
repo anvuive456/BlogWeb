@@ -10,11 +10,11 @@ const SearchBar = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const submit = () => {
-    router.push(`/posts?search=${inputRef.current?.value || ''}&page=1`);
+    router.push(`/posts?search=${inputRef.current?.value || ''}`);
   }
   return (
       <div className="relative border rounded-sm overflow-hidden">
-        <form className='flex flex-row items-center'>
+        <form action={submit} className='flex flex-row items-center'>
           <input ref={inputRef} className="w-full  py-4 pr-10 pl-4 font-light text-gray-900 border-0"
                  type="text" name="search" defaultValue={search} id="" placeholder="Tìm bài viết..."/>
           <button onClick={submit}

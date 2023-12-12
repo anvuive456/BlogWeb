@@ -35,8 +35,21 @@ model Post {
 
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
+  medias     Media[]
 
   @@map("posts")
+}
+
+model Media {
+  id       String @id @default(cuid())
+  source   String
+  width    Int
+  height   Int
+  mimeType String
+  post     Post?  @relation(fields: [postId], references: [id])
+  postId   Int?
+
+  @@map("images")
 }
 
 model Account {

@@ -1,6 +1,6 @@
 import {
   JetBrains_Mono as FontMono,
-  Inter as FontSans,
+  Inter as FontSans, Leckerli_One,
 } from 'next/font/google';
 
 export const fontSans = FontSans({
@@ -12,3 +12,4 @@ export const fontMono = FontMono({
   subsets: ['latin'],
   variable: '--font-mono',
 });
+export const leckerliOne = Leckerli_One({style: 'normal',subsets:[], weight: '400'})

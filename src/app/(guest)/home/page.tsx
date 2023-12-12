@@ -7,7 +7,7 @@ import LoadMoreButton from "@an/app/(guest)/home/_components/LoadMoreButton";
 
 const Page = async () => {
 
-  const response = await fetch(baseApiUrl + `/posts?limit=10&page=1`).then(res => res.json());
+  const response = await fetch(baseApiUrl + `/posts?limit=10&page=1&published=true`).then(res => res.json());
   const {posts} = response;
   return (
       <>

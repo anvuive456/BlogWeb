@@ -67,7 +67,10 @@ const Page = () => {
   }
   const deleteCategory = async ({id}: { id: number }) => {
     setLoading(true);
-    const res = await fetch(baseApiUrl + `/admin/categories/${id}`, {method: 'DELETE'}).then(res => res.json());
+    const res = await fetch(baseApiUrl + `/admin/categories/${id}`, {
+      method: 'DELETE',
+      // mode: 'same-origin'
+    }).then(res => res.json());
     if (res.message) {
       toast.error(res.message);
       return;

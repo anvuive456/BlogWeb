@@ -11,24 +11,26 @@ type Props = {
 const Page = async ({params, searchParams}: { params: any, searchParams: Props }) => {
   const {search, page} = searchParams;
 
-  console.log(page);
-  // if(!page) {
-  //   redirect('/posts?page=1');
+  console.log(page, search);
+  // if (!page) {
+  //   redirect('/posts?page=1&limit=10');
   // }
 
   const {
-    posts,
-    count,
-    pageCount
-  } = await fetch(baseApiUrl + `/posts?search=${search}&page=${page}&limit=10`).then(res => res.json());
+    posts
+  } = await fetch(baseApiUrl + `/posts?search=${search}&pe=false`).then(res => res.json());
 
-
+  console.log(posts);
   return (
       <>
         <SearchBar/>
-        {
-            posts && posts.map((post: Post) => <LandScapeArticleCard key={post.id} post={post}/>)
-        }
+
+        <div className='my-2'>
+          {
+              posts && posts.map((post: Post) => <LandScapeArticleCard key={post.id} post={post}/>)
+          }
+        </div>
+
       </>
   )
 }

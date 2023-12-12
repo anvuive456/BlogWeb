@@ -4,8 +4,7 @@ import {baseUrl} from "../../../../lib/api";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl + '/posts'),
-  title: 'Trang chủ',
-  description: 'Xem các bài đăng',
+  title: 'Tìm bài viết',
 }
 
 export const revalidate =0;

@@ -19,11 +19,11 @@ const options: NextAuthOptions = {
   },
   adapter:PrismaAdapter(prisma),
   providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID ?? '',
-      clientSecret: process.env.GITHUB_SECRET ?? '',
-
-    }),
+    // GitHubProvider({
+    //   clientId: process.env.GITHUB_ID ?? '',
+    //   clientSecret: process.env.GITHUB_SECRET ?? '',
+    //
+    // }),
     CredentialsProvider({
 
           name: 'Credentials',

@@ -6,7 +6,8 @@ import {slugGenerate} from "../../../../lib/slug_generator";
 export const GET = async (req: NextRequest) => {
 
 
-  const query = req.nextUrl.searchParams
+  const query = req.nextUrl.searchParams;
+  const pe = query.get('pe') ?? true;
   const search = query.get('search') ?? '';
   const orderBy = query.get('orderBy') ?? 'createdAt';
   const orderDirection = query.get('orderDirection') ?? 'desc';
@@ -15,6 +16,26 @@ export const GET = async (req: NextRequest) => {
   const skip = (page && limit) ? (Number(page) - 1) * limit : undefined;
   const published = Boolean(query.get('published')) || undefined;
   console.log(limit, skip);
+
+  if (pe && !Boolean(pe)) {
+    const posts = prisma.post.findMany({
+      where: {
+        OR: [
+          {
+            title: {contains: search, mode: 'insensitive'}
+          }
+        ],
+        published: true
+      },
+      orderBy: {
+        [orderBy]: orderDirection,
+      },
+      include: {
+        category: true
+      },
+    });
+    return NextResponse.json({posts});
+  }
 
   const [posts, count] =
       await prisma.$transaction([
@@ -87,7 +108,7 @@ export const POST = async (req: NextRequest) => {
     const post = await prisma.post.create({
               data: {
                 title, slug, url, description, image: imagePath,
-                content:{
+                content: {
                   set: JSON.parse(content ?? '[]')
                 },
                 // authorId: 'clpkq2u5w00001mgv8rb36ckr',

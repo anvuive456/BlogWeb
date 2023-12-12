@@ -5,9 +5,7 @@ import AppFooter from "@an/components/AppFooter";
 const inter = Inter({subsets: ['latin']});
 // const popin = Poppins({subsets:['latin'],weight:['100','200','300','400','500','600','900']});
 
-
-
-
+export const revalidate = 0;
 export default function RootLayout({
                                      children,
                                    }: {
