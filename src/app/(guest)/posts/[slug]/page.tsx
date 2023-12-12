@@ -4,6 +4,8 @@ import {notFound} from "next/navigation";
 import {createPlateEditor, createPlugins, EDescendant, TElement} from '@udecode/plate-common';
 import {Metadata, ResolvingMetadata} from "next";
 import {serialize} from "@an/lib/utils";
+import AppDate from "@an/components/AppDate";
+import Image from "next/image";
 // import {serializeHtml} from '@udecode/plate-serializer-html';
 // import {DndProvider} from 'react-dnd';
 // import {HTML5Backend} from 'react-dnd-html5-backend';
@@ -19,14 +21,14 @@ export async function generateMetadata({params, searchParams}: Props,
   const body = await fetch(baseApiUrl + `/posts/${params.slug}`).then(res => res.json()).catch(console.log);
   const {post} = body;
   return {
-    title: post.title,
-    metadataBase: new URL(baseUrl + '/' + post.url),
+    title: post?.title,
+    metadataBase: new URL(baseUrl + '/' + post?.url ??''),
     openGraph: {
-      title: post.title,
+      title: post?.title,
       type: 'article',
-      description: post.description,
+      description: post?.description,
       siteName: baseUrl,
-      url: post.url,
+      url: post?.url,
     }
   }
 }
@@ -41,14 +43,23 @@ const Page = async ({params}: Props) => {
   if (!body.post) {
     notFound();
   }
-  const {content} = body.post;
+  const {content, title, image,createdAt} = body.post;
   console.log(content);
 
   const data = content.map((e: any) => serialize(e)).join('');
   return (
-      <div dangerouslySetInnerHTML={{__html: data}}>
-
+      <div className='mx-3'>
+        <h2 className='text-3xl font-bold mb-3 '>
+          {title}
+        </h2>
+        <div className='flex items-end mb-3 ab'>
+          <AppDate dateString={createdAt.toString()} className='font-light text-sm text-end w-full'/>
+        </div>
+        <hr className='mx-3 my-2'/>
+        <div dangerouslySetInnerHTML={{__html: data}}>
+        </div>
       </div>
+
   )
 }
 

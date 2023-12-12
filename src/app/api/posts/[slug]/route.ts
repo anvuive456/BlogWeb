@@ -32,6 +32,7 @@ export const PUT = async (req: NextRequest, {params}: { params: { slug: string }
     const description = form.get('description')?.toString() || '';
     let slug = form.get('slug')?.toString() || '';
     if (!slug) slug = slugGenerate(title);
+    if(slug.includes(' ')) return NextResponse.json({message:'Slug vẫn còn khoảng trắng'},{status:400});
     let url = form.get('url')?.toString() || '';
     if (!url) url = `/posts/${slug}`;
     const cateId = form.get('categoryId')?.toString() || '';

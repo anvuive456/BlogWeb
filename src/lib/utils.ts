@@ -3,8 +3,9 @@ import {twMerge} from 'tailwind-merge'
 import {createPlateEditor, EDescendant, TElement} from "@udecode/plate-common";
 import {serializeHtml} from "@udecode/plate-serializer-html";
 import {plugins} from "@an/components/PlateEditor";
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -47,11 +48,11 @@ export const serialize = (node: EDescendant<TElement[]>) => {
     case 'quote':
       return `<blockquote ><p>${children}</p></blockquote>`
     case 'p':
-      if(node.lineHeight){
-        if(node.lineHeight == '1.5')
-        addon +='leading-normal';
+      if (node.lineHeight) {
+        if (node.lineHeight == '1.5')
+          addon += 'leading-normal';
       }
-      return `<p class="m-0 px-0 py-1 ${addon}" >${children}</p>`
+      return `<p class="break-words m-0 px-0 py-1 ${addon}" >${children}</p>`
     case 'link':
     case 'a':
       return `<a class="font-medium text-primary underline decoration-primary underline-offset-4" target="${node.target}" href="${escapeHTML(node.url as string)}">${children}</a>`

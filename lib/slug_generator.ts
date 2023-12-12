@@ -1,9 +1,11 @@
 export const slugGenerate = (text: string) => {
   const output = showUnsignedString(text);
-  return output.replace(/[^a-zA-Z0-9 ]/g, '')
-      .replace(' ', '-')
-      .replace('%20','-')
-      .toLowerCase()
+  let result = output.replace(/[^a-zA-Z0-9 ]/g, '');
+  result = result.replace('  ', ' ')
+  result = result.replaceAll(' ', '-')
+  result = result.toLowerCase()
+
+  return result;
 }
 
 
