@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 }
 type Props = {
   children: React.ReactNode,
-  auth: React.ReactNode
+  // auth: React.ReactNode
 }
 export default async function RootLayout({
                                            children,
-                                           auth
+
                                          }: Props) {
   const session = await getServerSession();
   return (
@@ -28,7 +28,6 @@ export default async function RootLayout({
             {children}
           </ToastProvider>
         </div>
-        {auth}
       </SessionProvider>
 
   )

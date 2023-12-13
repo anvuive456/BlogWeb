@@ -20,7 +20,7 @@ export default function IndexPage() {
     readAs: 'BinaryString',
     multiple: false,
     validators: [
-      new FileSizeValidator({maxFileSize: 1024 * 1024 * 3}),
+      new FileSizeValidator({maxFileSize: 1024 * 1024 * 1}),
       new FileTypeValidator(['jpg', 'png', 'jpeg', 'svg']),
 
     ],

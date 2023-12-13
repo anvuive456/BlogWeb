@@ -1,5 +1,5 @@
-'use client'
-export  const toBase64 = (file: File): Promise<string> => {
+'use client';
+export const toBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
 

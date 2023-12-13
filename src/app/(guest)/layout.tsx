@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en" className='overflow-x-hidden max-w-full'>
-      <body  className={inter.className + ' overflow-x-hidden max-w-full'}>
+      <body  className={inter.className}>
       <AppHeader/>
       {children}
 

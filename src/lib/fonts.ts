@@ -12,4 +12,4 @@ export const fontMono = FontMono({
   subsets: ['latin'],
   variable: '--font-mono',
 });
-export const leckerliOne = Leckerli_One({style: 'normal',subsets:[], weight: '400'})
+export const leckerliOne = Leckerli_One({ style: 'normal', subsets: [], weight: '400' });
