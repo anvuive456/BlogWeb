@@ -23,7 +23,7 @@ export async function generateMetadata({params, searchParams}: Props,
       description: post?.description,
       siteName: baseUrl,
       url: post?.url,
-      images:[baseUrl+ `/photo/${params.slug}`]
+      images:[baseUrl + `/api/photo/${params.slug}`]
     }
   }
 }
