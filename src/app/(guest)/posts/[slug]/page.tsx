@@ -1,15 +1,9 @@
 import {baseApiUrl, baseUrl} from "../../../../../lib/api";
 import {notFound} from "next/navigation";
 
-import {createPlateEditor, createPlugins, EDescendant, TElement} from '@udecode/plate-common';
 import {Metadata, ResolvingMetadata} from "next";
 import {serialize} from "@an/lib/utils";
 import AppDate from "@an/components/AppDate";
-import Image from "next/image";
-// import {serializeHtml} from '@udecode/plate-serializer-html';
-// import {DndProvider} from 'react-dnd';
-// import {HTML5Backend} from 'react-dnd-html5-backend';
-// import {plugins} from "@an/components/PlateEditor";
 
 type Props = {
   params: { slug: string }
@@ -29,6 +23,7 @@ export async function generateMetadata({params, searchParams}: Props,
       description: post?.description,
       siteName: baseUrl,
       url: post?.url,
+      images:[baseUrl+ `/photo/${params.slug}`]
     }
   }
 }
