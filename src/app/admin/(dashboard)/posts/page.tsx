@@ -1,8 +1,7 @@
 'use client';
 
-import { api, baseApiUrl } from '../../../../../lib/api';
-import Link from 'next/link';
-import { Suspense, useEffect, useState } from 'react';
+import { baseApiUrl } from '../../../../../lib/api';
+import { useEffect, useState } from 'react';
 import AppDate from '@an/components/AppDate';
 import { PostWithCategory } from '@an/types/types';
 import { useRouter } from 'next/navigation';
@@ -77,7 +76,7 @@ const Page = () => {
   const togglePublish = async ({ id }: { id: number }) => {
     setLoading(true);
     const data = await fetch(baseApiUrl + `/admin/posts/publish`, {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({ id: id }),
     }).then(res => res.json());
     if (!data.message) await getPosts();

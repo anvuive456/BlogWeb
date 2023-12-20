@@ -30,9 +30,9 @@ import {baseApiUrl} from "../../../../lib/api";
 // }
 export default async function Page() {
 
-  const categories = await fetch(baseApiUrl + '/categories?postLimit=2')
+  const categories = await fetch(baseApiUrl + '/categories?postLimit=2',{ next: { revalidate: 0 } })
       .then(value => value.json())
-      .then(value => value as CategoryWithPosts[]).catch(reason => []);
+      .then(value => value as CategoryWithPosts[]);
   return (
       <>
         <div className="mr-2 md:mr-4 ml-2">

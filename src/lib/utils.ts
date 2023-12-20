@@ -1,21 +1,21 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { createPlateEditor, EDescendant, TElement } from '@udecode/plate-common';
-import { serializeHtml } from '@udecode/plate-serializer-html';
-import { plugins } from '@an/components/PlateEditor';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import {
+  EDescendant,
+  TElement,
+} from '@udecode/plate-common';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 const escapeHTML = (unsafe: string) => {
-  return unsafe.replaceAll('&', '&amp;')
+  return unsafe
+    .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
-    .replaceAll('\'', '&#039;');
+    .replaceAll("'", '&#039;');
 };
 export const serialize = (node: EDescendant<TElement[]>) => {
   if (node.text) {
@@ -24,14 +24,17 @@ export const serialize = (node: EDescendant<TElement[]>) => {
       string = `<strong>${string}</strong>`;
     }
     let style = '';
-    if (node.backgroundColor) style += `background-color: ${node.backgroundColor};`;
+    if (node.backgroundColor)
+      style += `background-color: ${node.backgroundColor};`;
     if (node.color) style += `color:${node.color};`;
     if (node.fontSize) style += `font-size:${node.fontSize};`;
     if (style.length == 0) return string;
     return `<span style='${style}'>${string}</span>`;
   }
 
-  const children: string = (node.children) ? (node.children as TElement[]).map(n => serialize(n)).join('') : '';
+  const children: string = node.children
+    ? (node.children as TElement[]).map(n => serialize(n)).join('')
+    : '';
   let addon = '';
 
   switch (node.type) {
@@ -53,20 +56,21 @@ export const serialize = (node: EDescendant<TElement[]>) => {
       return `<blockquote ><p>${children}</p></blockquote>`;
     case 'p':
       if (node.lineHeight) {
-        if (node.lineHeight == '1.5')
-          addon += 'leading-normal';
+        if (node.lineHeight == '1.5') addon += 'leading-normal';
       }
       return `<p class='break-words m-0 px-0 py-1 ${addon}' >${children}</p>`;
     case 'link':
     case 'a':
-      return `<a class="font-medium text-primary underline decoration-primary underline-offset-4" target="${node.target}" href="${escapeHTML(node.url as string)}">${children}</a>`;
+      return `<a class="font-medium text-primary underline decoration-primary underline-offset-4" target="${
+        node.target
+      }" href="${escapeHTML(node.url as string)}">${children}</a>`;
     case 'caption':
       return `<caption class=${cn(
         'mt-2 w-full resize-none border-none bg-inherit p-0 font-[inherit] text-inherit',
         'focus:outline-none focus:[&::placeholder]:opacity-0',
         'text-center print:placeholder:text-transparent',
       )}>${children}</caption>`;
-    case 'ul' :
+    case 'ul':
       return `<ul class="m-0 ps-6 list-disc [&_ul]:list-[circle] [&_ul_ul]:list-[square]">${children}</ul>`;
     case 'li':
       return `<li>${children}</li>`;
@@ -86,10 +90,11 @@ export const serialize = (node: EDescendant<TElement[]>) => {
       return `<tr class="h-full">${children}</tr>`;
     case 'td':
       if (node.attributes) {
+        const { colspan, rowspan } = node.attributes as any;
+
+        if (colspan) addon += `col-span-${colspan}`;
         // @ts-ignore
-        if (node.attributes.colspan) addon += `col-span-${node.attributes.colspan}`;
-        // @ts-ignore
-        if (node.attributes.rowspan) addon += `row-span-${node.attributes.rowspan}`;
+        if (rowspan) addon += `row-span-${rowspan}`;
       }
       return `<td class=' ${addon} border relative h-full overflow-visible bg-background'>${children}</td>`;
     default:

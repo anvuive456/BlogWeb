@@ -1,21 +1,21 @@
 import { Category, Post, User } from '@prisma/client';
 
 export type CategoryWithPosts = Category & {
-  posts: Post[]
-}
+  posts: Post[];
+};
 
 export type CategoryWithCountPost = Category & {
   _count: {
-    posts: number
-  }
-}
+    posts: number;
+  };
+};
 
 export type PostWithAuthor = Post & {
-  author: User
-}
+  author: User;
+};
 
 export type PostWithCategory = Post & {
-  category: Category
-}
+  category: Category;
+};
 
 export type PostFullOptions = PostWithAuthor & PostWithCategory;

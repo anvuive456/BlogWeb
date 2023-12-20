@@ -30,7 +30,7 @@ const Categories = async () => {
 };
 
 const RecentPosts = async () => {
-  const posts = await fetch(baseApiUrl + '/recent_posts')
+  const posts = await fetch(baseApiUrl + '/recent_posts', { next: { revalidate: 0 } })
     .then(res => res.json())
     .then(value => value as PostWithAuthor[]);
 

@@ -2,13 +2,12 @@ import SearchBar from "@an/components/SearchBar";
 import {baseApiUrl} from "../../../../lib/api";
 import {Post} from "@prisma/client";
 import LandScapeArticleCard from "@an/components/LandScapeArticleCard";
-import {redirect} from "next/navigation";
 
 type Props = {
   search: string,
   page: number,
 }
-const Page = async ({params, searchParams}: { params: any, searchParams: Props }) => {
+const Page = async ({searchParams}: { params: any, searchParams: Props }) => {
   const {search, page} = searchParams;
 
   console.log(page, search);
@@ -18,7 +17,7 @@ const Page = async ({params, searchParams}: { params: any, searchParams: Props }
 
   const {
     posts
-  } = await fetch(baseApiUrl + `/posts?search=${search}&pe=false`).then(res => res.json());
+  } = await fetch(baseApiUrl + `/posts?search=${search}&pe=false`,{ next: { revalidate: 0 } }).then(res => res.json());
 
   console.log(posts);
   return (
