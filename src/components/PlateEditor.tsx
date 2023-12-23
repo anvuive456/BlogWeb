@@ -118,6 +118,8 @@ import { withPlaceholders } from '@an/components/plate-ui/placeholder';
 import { withDraggables } from '@an/components/plate-ui/with-draggables';
 import { EmojiCombobox } from '@an/components/plate-ui/emoji-combobox';
 import { TooltipProvider } from '@an/components/plate-ui/tooltip';
+import { getDownloadURL, ref, uploadBytes, uploadString } from '@firebase/storage';
+import { storage } from '../../lib/firebase/fb';
 
 type Props = { editorName: string, onChange?: (value: Value) => void, initialValue?: Value | null, value?: Value };
 
@@ -143,7 +145,20 @@ export const plugins = createPlugins(
       renderAfterEditable: LinkFloatingToolbar as RenderAfterEditable,
     }),
     createListPlugin(),
-    createImagePlugin(),
+    createImagePlugin({
+      options: {
+        uploadImage: async (dataUrl: string | ArrayBuffer): Promise<string> => {
+          const imageRef = ref(storage, 'images/abc.jpg');
+
+          if (dataUrl instanceof ArrayBuffer) {
+            const uploaded = await uploadBytes(imageRef, dataUrl);
+            return getDownloadURL(uploaded.ref);
+          }
+          const uploaded = await uploadString(imageRef, dataUrl, 'data_url');
+          return getDownloadURL(uploaded.ref);
+        },
+      },
+    }),
     createMediaEmbedPlugin(),
     createCaptionPlugin({
       options: {

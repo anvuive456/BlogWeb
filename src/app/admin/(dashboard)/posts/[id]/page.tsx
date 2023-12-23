@@ -12,6 +12,9 @@ import Image from 'next/image';
 import { useFilePicker } from 'use-file-picker';
 import { FileSizeValidator, FileTypeValidator } from 'use-file-picker/validators';
 import Resizer from 'react-image-file-resizer';
+import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
+import { storage } from '../../../../../../lib/firebase/fb';
+import { slugGenerate } from '../../../../../../lib/slug_generator';
 
 const Page = ({ params }: { params: { id: number } }) => {
   const router = useRouter();
@@ -25,11 +28,11 @@ const Page = ({ params }: { params: { id: number } }) => {
   const [image, setImage] = useState('/images/800x400.svg');
   const { openFilePicker } = useFilePicker({
     accept: 'image/*',
-    readAs: 'BinaryString',
+    readAs: 'ArrayBuffer',
     multiple: false,
     validators: [
-      new FileSizeValidator({ maxFileSize: 1024 * 1024 * 3 }),
-      new FileTypeValidator(['jpg', 'png', 'jpeg', 'svg']),
+      new FileSizeValidator({ maxFileSize: 1024 * 1024 }),
+      new FileTypeValidator(['jpg', 'png', 'jpeg']),
     ],
     onFilesSelected: console.log,
     onFilesRejected: ({ errors }) => {
@@ -39,9 +42,17 @@ const Page = ({ params }: { params: { id: number } }) => {
     },
     onFilesSuccessfullySelected: async (data) => {
       const [file] = data.plainFiles;
-      Resizer.imageFileResizer(file, 800, 400, 'PNG', 100, 0, async (value) => {
-        setImage(value as string);
-      }, 'base64', 800, 400);
+      // Resizer.imageFileResizer(file, 800, 400, 'PNG', 100, 0, async (value) => {
+      //   setImage(value as string);
+      // }, 'base64', 800, 400);
+
+      const imageRef = ref(storage, `/images/${file.name}.png`);
+      uploadBytes(imageRef, file).then(value => {
+        getDownloadURL(value.ref).then(value1 => {
+          setImage(value1);
+        }).catch(reason => toast.error(reason.toString()));
+      }).catch(reason => toast.error(reason.toString()));
+      // setImage(file);
     },
   });
   // const [content, setContent] = useState<Value>();
@@ -110,7 +121,8 @@ const Page = ({ params }: { params: { id: number } }) => {
 
             </div>
           </div>
-          <input defaultValue={title} name='title' className='border rounded p-2 mb-2 w-full'
+          <input value={title} onChange={event => setTitle(event.target.value)} name='title'
+                 className='border rounded p-2 mb-2 w-full'
                  placeholder='Nhập tiêu đề ' />
           <input defaultValue={description} name='description' className='border rounded p-2 mb-2 w-full'
                  placeholder='Thêm mô tả' />

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../lib/prisma';
 import { slugGenerate } from '../../../../lib/slug_generator';
+import { getDownloadURL, ref, uploadString } from '@firebase/storage';
+import { storage } from '../../../../lib/firebase/fb';
 
 export const GET = async (req: NextRequest) => {
   const query = req.nextUrl.searchParams;

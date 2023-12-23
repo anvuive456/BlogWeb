@@ -4,7 +4,7 @@ const withMDX = require('@next/mdx')()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images:{
-    domains:['placehold.co']
+    domains:['placehold.co','firebasestorage.googleapis.com'],
   },
   async redirects() {
     return [

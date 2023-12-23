@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useRef } from 'react';
-
 const SearchBar = () => {
   const router = useRouter();
   const params = useSearchParams();
